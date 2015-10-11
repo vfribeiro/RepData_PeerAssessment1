@@ -85,16 +85,16 @@ There's a clear difference from the initial mean and initial median. Although, t
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-Adds a new column containing 'Weekday' if day is Monday, Tuesday, Wednesday, Thursday or Friday or 'Weekend' if day is Saturday or Sunday. Aggregates data accordingly and plots a multipanel plot using ggplot.
+Adds a new column containing 'Weekday' if day is Monday, Tuesday, Wednesday, Thursday or Friday or 'Weekend' if day is Saturday or Sunday. Aggregates data accordingly and plots a multipanel plot.
 
 ```{r, echo=TRUE}
 weekend <- c("Saturday","Sunday")
 data.nona$weekday <- ifelse(weekdays(data.nona$date) %in% weekend, "Weekend" , "Weekday")
 data.nona.stepsbyWeekend <- aggregate(steps ~ interval+weekday, data = data.nona, mean)
 
-library(ggplot2)
-ggplot(data.nona.stepsbyWeekend, aes(interval, steps)) + 
-  geom_line() + facet_grid(weekday ~ .) + 
-  xlab("5 min interval") + ylab("average # steps")
+library(lattice)
+xyplot(steps ~ interval | weekday, data.nona.stepsbyWeekend, type = "l", layout = c(1,2), 
+       xlab = "5 min interval", ylab = "average # steps", 
+       col = "steelblue")
 ```
 
