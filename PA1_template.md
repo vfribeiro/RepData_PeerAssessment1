@@ -7,25 +7,28 @@
 ```r
 unzip(zipfile = 'activity.zip')
 data <- read.csv('activity.csv')
-summary(data)
 ```
 
-```
-##      steps                date          interval     
-##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
-##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
-##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.38   2012-10-04:  288   Mean   :1177.5  
-##  3rd Qu.: 12.00   2012-10-05:  288   3rd Qu.:1766.2  
-##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
-##  NA's   :2304     (Other)   :15840
-```
-
-Convert date to date format in r
+Converting date to date format in r
 
 
 ```r
 data$date <- as.Date(data$date)
+summary(data)
+```
+
+```
+##      steps             date               interval     
+##  Min.   :  0.00   Min.   :2012-10-01   Min.   :   0.0  
+##  1st Qu.:  0.00   1st Qu.:2012-10-16   1st Qu.: 588.8  
+##  Median :  0.00   Median :2012-10-31   Median :1177.5  
+##  Mean   : 37.38   Mean   :2012-10-31   Mean   :1177.5  
+##  3rd Qu.: 12.00   3rd Qu.:2012-11-15   3rd Qu.:1766.2  
+##  Max.   :806.00   Max.   :2012-11-30   Max.   :2355.0  
+##  NA's   :2304
+```
+
+```r
 head(data)
 ```
 
@@ -41,7 +44,7 @@ head(data)
 
 ## What is mean total number of steps taken per day?
 
-Summing setps by day, while removing NA. After, a simple histogram. Finally, calculates mean and median.
+Aggregating setps by day, while removing NA. Then, displaying a simple histogram and calculating mean and median.
 
 
 ```r
@@ -60,11 +63,11 @@ data.medianstepsbyday <- median(data.stepsbyday$x, na.rm=TRUE)
 options(scipen=1, digits=0)
 ```
 
-The mean is **9354**. The median is **10395**. 
+The mean is **9354**. The median is **10395**. Please, notice that NA's have been removed before calculating the mean and median.
 
 ## What is the average daily activity pattern?
 
-Draws a plot with with average amount of steps taken vs. 5-min interval across all days.
+Drawing a plot with with average amount of steps taken vs. 5-min interval across all days.
 
 
 ```r
@@ -81,7 +84,7 @@ plot(data.stepsby5min$Group.1, data.stepsby5min$x, type = 'l',
 intmax <- data.stepsby5min$Group.1[which.max(data.stepsby5min$x)]
 ```
 
-The 5-minute interval where the average across all days reaches the max is : **835**.
+The 5-minute interval where the average across all days reaches the max is : **835**. It seems people using such devices like to walk, jog, run 'early' in the morning...
 
 ## Imputing missing values
 
@@ -93,7 +96,7 @@ data.naperc <- data.amountna / nrow(data) * 100
 
 There's total of **2304** missig values in the dataset, which is about **13%** of the total number of rows.
 
-A simple strategy would be fill in days / 5-minutes intervals with the average from all other days. Bellow, a new dataset is created using such strategy. A histogram, mean and mediam are presented.
+A simple strategy would be fill in NA's days / 5-minutes intervals with the average from all other days. Bellow, a new dataset is created using such strategy and then a histogram, mean and mediam are presented.
 
 
 ```r
@@ -117,11 +120,11 @@ data.nona.medianstepsbyday <- median(data.nona.stepsbyday$x, na.rm=TRUE)
 
 The new mean is **10766**. The new median is **10766**.
 
-There's a clear difference from the initial mean and initial median. Although, they wouldn't be that different if in the first aggregate function NA's haven't been removed.
+There's a clear difference from the initials mean and median. Although, they wouldn't be that different if NA's haven't been removed in the first aggregate function.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-Adds a new column containing 'Weekday' if day is Monday, Tuesday, Wednesday, Thursday or Friday or 'Weekend' if day is Saturday or Sunday. Aggregates data accordingly and plots a multipanel plot.
+Adding a new column containing weekday where it will contain 'Weekday' if day is Monday, Tuesday, Wednesday, Thursday or Friday or 'Weekend' if day is Saturday or Sunday. Aggregates data accordingly and plots a multipanel plot.
 
 
 ```r
